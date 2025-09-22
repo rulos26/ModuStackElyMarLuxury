@@ -283,6 +283,7 @@ return [
     */
 
     'laravel_asset_bundling' => false,
+    'enabled_laravel_mix' => false,
     'laravel_css_path' => 'css/app.css',
     'laravel_js_path' => 'js/app.js',
 

@@ -16,7 +16,7 @@
     @endif>
 
     {{-- Small brand logo --}}
-    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+    <img src="https://via.placeholder.com/33x33/007bff/ffffff?text=Logo"
          alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
          class="{{ config('adminlte.logo_img_class', 'brand-image img-circle elevation-3') }}"
          style="opacity:.8">
