@@ -40,9 +40,14 @@
             @break
 
             @default
-                <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-                <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-                <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+                <!-- FontAwesome CDN -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+                <!-- OverlayScrollbars CDN -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/css/OverlayScrollbars.min.css" integrity="sha512-1V1vQ8KvJ4z4nJPFe6t/6eIe6Z8OZkIyTee/ab13FmRV1MxQlwN8/5/5hQ8HtL1TcdM7L7hO4n2o3h7QcLmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+                <!-- AdminLTE CDN -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" integrity="sha384-4rN6uL0zUe3LwJqDhdF8iFwX6Esa/Ro1pgqXgwSYYxwJfWSqUvWxO6S6nUnR5w2" crossorigin="anonymous">
 
                 @if(config('adminlte.google_fonts.allowed', true))
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -109,10 +114,17 @@
             @break
 
             @default
-                <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-                <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-                <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-                <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+                <!-- jQuery CDN -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                <!-- Bootstrap CDN -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4Qc1BvhYdNdbdjFCqBf0Dlqy1dKnbddhx6gGzmiRk4a2qzfDIFc4yGX7yN3F+6DzFwHDhxuXPqFw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                <!-- OverlayScrollbars CDN -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/js/jquery.overlayScrollbars.min.js" integrity="sha512-1V1vQ8KvJ4z4nJPFe6t/6eIe6Z8OZkIyTee/ab13FmRV1MxQlwN8/5/5hQ8HtL1TcdM7L7hO4n2o3h7QcLmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                <!-- AdminLTE CDN -->
+                <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js" integrity="sha384-4rN6uL0zUe3LwJqDhdF8iFwX6Esa/Ro1pgqXgwSYYxwJfWSqUvWxO6S6nUnR5w2" crossorigin="anonymous"></script>
         @endswitch
     @endif
 
