@@ -1,5 +1,69 @@
 # CHANGELOG
 
+## [2024-12-19] - Instalación de Laravel Permission y configuración de roles
+
+### Archivos modificados:
+- `app/Models/User.php`
+- `database/seeders/RolePermissionSeeder.php`
+- `database/seeders/DatabaseSeeder.php`
+- `.cursor/rules.yml`
+- `composer.json`
+- `composer.lock`
+- `config/permission.php`
+- `database/migrations/2025_09_22_024846_create_permission_tables.php`
+
+### Cambios realizados:
+
+#### Instalación de Laravel Permission
+- **Paquete**: `spatie/laravel-permission` v6.21.0 instalado
+- **Configuración**: Archivo de configuración publicado
+- **Migraciones**: Tablas de roles y permisos creadas
+
+#### Configuración del modelo User
+- **Trait HasRoles**: Agregado al modelo User para manejo de roles y permisos
+- **Import**: `use Spatie\Permission\Traits\HasRoles;` añadido
+
+#### Creación de roles y permisos
+- **Roles creados**: `superadmin` y `admin`
+- **Permisos básicos**: 
+  - `view-dashboard`
+  - `manage-users`
+  - `manage-roles`
+  - `manage-permissions`
+  - `view-reports`
+  - `manage-settings`
+
+#### Asignación de permisos
+- **Superadmin**: Todos los permisos asignados
+- **Admin**: Permisos limitados (dashboard, reports, users)
+
+#### Usuarios de prueba creados
+- **Usuario root**: 
+  - Email: `root@admin.com`
+  - Password: `root`
+  - Rol: `superadmin`
+- **Usuario admin**:
+  - Email: `admin@admin.com`
+  - Password: `admin`
+  - Rol: `admin`
+
+#### Reglas de desarrollo actualizadas
+- **Nueva regla**: Cada módulo debe incluir test PHPUnit y vista de pruebas
+- **Archivo**: `.cursor/rules.yml` actualizado
+
+### Instrucciones de deploy:
+1. Ejecutar migraciones: `php artisan migrate`
+2. Ejecutar seeders: `php artisan db:seed`
+3. Verificar usuarios creados en la base de datos
+4. Probar login con las credenciales proporcionadas
+
+### DB:
+- **Migración**: `2025_09_22_024846_create_permission_tables.php`
+- **Tablas creadas**: `roles`, `permissions`, `model_has_roles`, `model_has_permissions`, `role_has_permissions`
+- **Seeder**: `RolePermissionSeeder` ejecutado exitosamente
+
+---
+
 ## [2024-12-19] - Migración completa a CDN y corrección de imágenes base64
 
 ### Archivos modificados:
