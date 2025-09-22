@@ -8,4 +8,4 @@ rules:
   - "Cada módulo creado debe incluir automáticamente un test en PHPUnit y una vista en el módulo de pruebas para verificación visual."
   - "Después de crear cualquier módulo, ejecutar las pruebas PHPUnit y crear un log de resultados en la carpeta 'documentacion/logs de pruebas'."
   - "Cada vista creada debe estar registrada en el archivo web.php y agregada al menú de adminlte.php en la sección menu con su respectivo rol de acceso."
-  - "Todas las vistas deben usar @extends('layouts.app') en lugar de @extends('dashboard.app')."
+  - "Todas las vistas deben usar @extends('adminlte::page')  en lugar de @extends('layouts.app')."
