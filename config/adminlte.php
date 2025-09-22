@@ -322,6 +322,25 @@ return [
             'icon' => 'fas fa-fw fa-tachometer-alt',
             'can' => 'view-dashboard',
         ],
+        ['header' => 'ADMINISTRACIÓN'],
+        [
+            'text' => 'Usuarios',
+            'url' => 'admin/users',
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'manage-users',
+        ],
+        [
+            'text' => 'Roles',
+            'url' => 'admin/roles',
+            'icon' => 'fas fa-fw fa-user-tag',
+            'can' => 'manage-roles',
+        ],
+        [
+            'text' => 'Permisos',
+            'url' => 'admin/permissions',
+            'icon' => 'fas fa-fw fa-key',
+            'can' => 'manage-permissions',
+        ],
         [
             'text' => 'pages',
             'url' => 'admin/pages',
