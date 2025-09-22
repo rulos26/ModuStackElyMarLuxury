@@ -6,3 +6,6 @@ rules:
   - "Para código PHP sigue PSR-12; para JS sigue convenciones del proyecto (usa ESLint si existe)."
   - "Si el cambio afecta la base de datos, añade una sección 'DB' con las migraciones o instrucciones."
   - "Cada módulo creado debe incluir automáticamente un test en PHPUnit y una vista en el módulo de pruebas para verificación visual."
+  - "Después de crear cualquier módulo, ejecutar las pruebas PHPUnit y crear un log de resultados en la carpeta 'documentacion/logs de pruebas'."
+  - "Cada vista creada debe estar registrada en el archivo web.php y agregada al menú de adminlte.php en la sección menu con su respectivo rol de acceso."
+  - "Todas las vistas deben usar @extends('layouts.app') en lugar de @extends('dashboard.app')."
