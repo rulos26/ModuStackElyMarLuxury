@@ -342,6 +342,12 @@ return [
             'can' => 'manage-permissions',
         ],
         [
+            'text' => 'Configuración',
+            'url' => 'admin/settings',
+            'icon' => 'fas fa-fw fa-cog',
+            'can' => 'manage-settings',
+        ],
+        [
             'text' => 'pages',
             'url' => 'admin/pages',
             'icon' => 'far fa-fw fa-file',
