@@ -1,5 +1,35 @@
 # CHANGELOG
 
+## [2025-09-23] - Corrección de variable dashboard_url en vista brand-logo-xs
+
+### Archivos modificados:
+- `resources/views/vendor/adminlte/partials/common/brand-logo-xs.blade.php`
+
+### Cambios realizados:
+
+#### Corrección de error de variable
+- **Problema**: Variable `$dashboard_url` no definida en línea 17
+- **Causa**: Duplicación en la definición de la variable
+- **Solución**: Eliminada redefinición duplicada que sobrescribía el valor procesado
+- **Resultado**: Variable `$dashboard_url` ahora funciona correctamente
+
+#### Detalles técnicos
+- **Líneas afectadas**: 11-15 (redefinición duplicada eliminada)
+- **Variable mantenida**: `$dashboard_url` procesada correctamente en líneas 3-9
+- **Variables agregadas**: `$appLogo` y `$appName` para configuración dinámica
+
+### Resultados de la corrección:
+- **Error corregido**: ✅ Variable `$dashboard_url` ahora está definida
+- **Vista funcional**: ✅ brand-logo-xs.blade.php funciona correctamente
+- **Configuración dinámica**: ✅ Logo y nombre se muestran dinámicamente
+
+### Instrucciones de deploy:
+1. Limpiar caché de vistas: `php artisan view:clear`
+2. Verificar que la página de configuración carga sin errores
+3. Confirmar que el logo y nombre se muestran correctamente
+
+---
+
 ## [2025-09-23] - Corrección de fechas y nueva regla de verificación
 
 ### Archivos modificados:
