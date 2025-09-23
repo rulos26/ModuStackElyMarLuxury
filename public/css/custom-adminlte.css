@@ -1,0 +1,85 @@
+/* Custom AdminLTE Styles for User Menu */
+.user-menu .dropdown-menu {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    min-width: 180px !important;
+    max-width: 220px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.375rem !important;
+    z-index: 1050 !important;
+}
+
+.user-menu .dropdown-menu .user-header {
+    padding: 10px 15px !important;
+    text-align: center !important;
+    background: #007bff !important;
+    color: white !important;
+}
+
+.user-menu .dropdown-menu .user-header img {
+    width: 45px !important;
+    height: 45px !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.user-menu .dropdown-menu .user-header p {
+    margin: 5px 0 0 0 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.user-menu .dropdown-menu .user-header small {
+    display: block !important;
+    font-size: 11px !important;
+    opacity: 0.8 !important;
+}
+
+.user-menu .dropdown-menu .user-footer {
+    padding: 10px !important;
+    background: #f8f9fa !important;
+    border-top: 1px solid #dee2e6 !important;
+}
+
+.user-menu .dropdown-menu .user-footer a {
+    font-size: 12px !important;
+    padding: 5px 10px !important;
+    margin: 2px !important;
+    border-radius: 3px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .user-menu .dropdown-menu {
+        right: 10px !important;
+        left: 10px !important;
+        min-width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+
+    .user-menu .dropdown-menu .user-footer {
+        text-align: center !important;
+    }
+
+    .user-menu .dropdown-menu .user-footer a {
+        display: block !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+}
+
+/* Ensure dropdown doesn't overflow viewport */
+.user-menu .dropdown-menu {
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+}
+
+/* Fix for Bootstrap 5 dropdown positioning */
+.user-menu .dropdown-menu[data-bs-popper] {
+    top: 100% !important;
+    left: auto !important;
+    right: 0 !important;
+    margin-top: 0.125rem !important;
+}

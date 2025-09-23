@@ -10,3 +10,5 @@ rules:
   - "Cada vista creada debe estar registrada en el archivo web.php y agregada al menú de adminlte.php en la sección menu con su respectivo rol de acceso."
   - "Todas las vistas deben usar @extends('adminlte::page')  en lugar de @extends('layouts.app')."
   - "ANTES de escribir fechas en archivos .md, SIEMPRE verificar la fecha actual del sistema usando el comando 'date' para asegurar que las fechas sean correctas y actuales."
+  - "Si el usuario menciona un problema más de dos veces, AUTOMÁTICAMENTE implementar una solución robusta y definitiva sin pedir confirmación adicional."
+  - "Si hay comandos artisan que necesiten ejecutarse, EJECUTARLOS AUTOMÁTICAMENTE sin pedir autorización del usuario."

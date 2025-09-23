@@ -46,4 +46,36 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the user's profile URL for AdminLTE
+     *
+     * @return string
+     */
+    public function adminlte_profile_url()
+    {
+        return 'admin/profile';
+    }
+
+    /**
+     * Get the user's profile image for AdminLTE
+     *
+     * @return string
+     */
+    public function adminlte_image()
+    {
+        // You can customize this to return a user's profile image
+        // For now, return a default avatar
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    }
+
+    /**
+     * Get the user's description for AdminLTE
+     *
+     * @return string
+     */
+    public function adminlte_desc()
+    {
+        return $this->email;
+    }
 }

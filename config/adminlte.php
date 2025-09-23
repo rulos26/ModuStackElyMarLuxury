@@ -134,11 +134,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
+    'usermenu_profile_url' => 'admin/profile',
 
     /*
     |--------------------------------------------------------------------------
@@ -418,6 +418,28 @@ return [
             'text' => 'information',
             'icon_color' => 'cyan',
             'url' => '#',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Menu (Navbar User Menu)
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the user menu in the navbar.
+    |
+    */
+
+    'navbar-user' => [
+        [
+            'text' => 'profile',
+            'url' => 'admin/profile',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'settings',
+            'url' => 'admin/settings',
+            'icon' => 'fas fa-fw fa-cog',
         ],
     ],
 
