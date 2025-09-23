@@ -20,6 +20,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Login Attempts Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for login attempts middleware
+    |
+    */
+
+    'login_max_attempts' => env('LOGIN_MAX_ATTEMPTS', 5),
+    'login_lockout_time' => env('LOGIN_LOCKOUT_TIME', 15), // minutes
+    'ip_whitelist' => [
+        // Agregar IPs que no deben ser bloqueadas nunca
+        // '127.0.0.1',
+        // '192.168.1.0/24', // Ejemplo de rango CIDR
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Policy Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for password policy rules
+    |
+    */
+
+    'password_min_length' => env('PASSWORD_MIN_LENGTH', 8),
+    'password_require_uppercase' => env('PASSWORD_REQUIRE_UPPERCASE', true),
+    'password_require_lowercase' => env('PASSWORD_REQUIRE_LOWERCASE', true),
+    'password_require_numbers' => env('PASSWORD_REQUIRE_NUMBERS', true),
+    'password_require_special_chars' => env('PASSWORD_REQUIRE_SPECIAL_CHARS', true),
+    'password_max_repeating_chars' => env('PASSWORD_MAX_REPEATING_CHARS', 3),
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |

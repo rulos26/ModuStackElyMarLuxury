@@ -182,11 +182,34 @@ class SettingsDashboardController extends Controller
      */
     private function updateSecuritySettings(Request $request)
     {
+        // Configuración de sesiones
         AppSetting::setValue('session_timeout', $request->session_timeout, 'integer', 'Tiempo de sesión (minutos)');
         AppSetting::setValue('max_login_attempts', $request->max_login_attempts, 'integer', 'Máximo intentos de login');
+
+        // Política de contraseñas
         AppSetting::setValue('password_min_length', $request->password_min_length, 'integer', 'Longitud mínima de contraseña');
+        AppSetting::setValue('password_require_uppercase', $request->boolean('password_require_uppercase'), 'boolean', 'Requerir mayúsculas en contraseñas');
+        AppSetting::setValue('password_require_lowercase', $request->boolean('password_require_lowercase'), 'boolean', 'Requerir minúsculas en contraseñas');
+        AppSetting::setValue('password_require_numbers', $request->boolean('password_require_numbers'), 'boolean', 'Requerir números en contraseñas');
+        AppSetting::setValue('password_require_special_chars', $request->boolean('password_require_special_chars'), 'boolean', 'Requerir caracteres especiales en contraseñas');
+        AppSetting::setValue('password_max_repeating_chars', $request->password_max_repeating_chars, 'integer', 'Máximo caracteres repetidos en contraseñas');
+
+        // Manejar palabras prohibidas
+        $forbiddenWords = [];
+        if ($request->has('password_forbidden_words') && !empty($request->password_forbidden_words)) {
+            $words = explode("\n", $request->password_forbidden_words);
+            $forbiddenWords = array_filter(array_map('trim', $words));
+        }
+        AppSetting::setValue('password_forbidden_words', json_encode($forbiddenWords), 'string', 'Palabras prohibidas en contraseñas');
+
+        // Configuración de autenticación
         AppSetting::setValue('require_2fa', $request->boolean('require_2fa'), 'boolean', 'Requerir autenticación de dos factores');
         AppSetting::setValue('allow_registration', $request->boolean('allow_registration'), 'boolean', 'Permitir registro');
+        AppSetting::setValue('email_verification_required', $request->boolean('email_verification_required'), 'boolean', 'Requerir verificación de email');
+
+        // Control de acceso por IP
+        AppSetting::setValue('ip_whitelist_enabled', $request->boolean('ip_whitelist_enabled'), 'boolean', 'Habilitar lista blanca de IPs');
+        AppSetting::setValue('allowed_ips', $request->allowed_ips, 'string', 'IPs permitidas');
     }
 
     /**

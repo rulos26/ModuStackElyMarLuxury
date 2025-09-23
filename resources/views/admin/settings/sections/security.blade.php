@@ -115,39 +115,82 @@
                         </small>
                     </div>
 
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="require_uppercase" name="require_uppercase">
-                            <label class="custom-control-label" for="require_uppercase">
-                                Requerir al menos una letra mayúscula
-                            </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="password_require_uppercase" name="password_require_uppercase" value="1"
+                                           {{ old('password_require_uppercase', \App\Models\AppSetting::getValue('password_require_uppercase', true)) ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="password_require_uppercase">
+                                        Requerir al menos una letra mayúscula
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="password_require_lowercase" name="password_require_lowercase" value="1"
+                                           {{ old('password_require_lowercase', \App\Models\AppSetting::getValue('password_require_lowercase', true)) ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="password_require_lowercase">
+                                        Requerir al menos una letra minúscula
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="password_require_numbers" name="password_require_numbers" value="1"
+                                           {{ old('password_require_numbers', \App\Models\AppSetting::getValue('password_require_numbers', true)) ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="password_require_numbers">
+                                        Requerir al menos un número
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="password_require_special_chars" name="password_require_special_chars" value="1"
+                                           {{ old('password_require_special_chars', \App\Models\AppSetting::getValue('password_require_special_chars', true)) ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="password_require_special_chars">
+                                        Requerir al menos un carácter especial
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="require_lowercase" name="require_lowercase">
-                            <label class="custom-control-label" for="require_lowercase">
-                                Requerir al menos una letra minúscula
-                            </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password_max_repeating_chars">Máximo caracteres repetidos:</label>
+                                <input type="number" class="form-control @error('password_max_repeating_chars') is-invalid @enderror"
+                                       id="password_max_repeating_chars" name="password_max_repeating_chars" min="0" max="10"
+                                       value="{{ old('password_max_repeating_chars', \App\Models\AppSetting::getValue('password_max_repeating_chars', 3)) }}">
+                                @error('password_max_repeating_chars')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    Máximo número de caracteres repetidos consecutivos (0-10)
+                                </small>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="require_numbers" name="require_numbers">
-                            <label class="custom-control-label" for="require_numbers">
-                                Requerir al menos un número
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="require_symbols" name="require_symbols">
-                            <label class="custom-control-label" for="require_symbols">
-                                Requerir al menos un símbolo especial
-                            </label>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password_forbidden_words">Palabras prohibidas:</label>
+                                <textarea class="form-control @error('password_forbidden_words') is-invalid @enderror"
+                                          id="password_forbidden_words" name="password_forbidden_words" rows="3"
+                                          placeholder="Una palabra por línea">@php
+                                    $words = json_decode(\App\Models\AppSetting::getValue('password_forbidden_words', '[]'), true);
+                                    echo implode("\n", $words);
+                                @endphp</textarea>
+                                @error('password_forbidden_words')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    Palabras que no pueden estar en las contraseñas (una por línea)
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>

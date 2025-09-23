@@ -115,4 +115,40 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email System Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the custom email system
+    |
+    */
+
+    'email_system' => [
+        'default_queue' => env('MAIL_QUEUE', true),
+        'max_retries' => env('MAIL_MAX_RETRIES', 3),
+        'retry_delay' => env('MAIL_RETRY_DELAY', 60),
+        'bulk_batch_size' => env('MAIL_BULK_BATCH_SIZE', 50),
+        'bulk_delay' => env('MAIL_BULK_DELAY', 1),
+        'log_failures' => env('MAIL_LOG_FAILURES', true),
+        'test_mode' => env('MAIL_TEST_MODE', false),
+        'test_email' => env('MAIL_TEST_EMAIL', 'test@example.com'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email Templates Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for email templates
+    |
+    */
+
+    'templates' => [
+        'default_category' => 'system',
+        'auto_create_examples' => env('MAIL_AUTO_CREATE_EXAMPLES', true),
+        'cache_templates' => env('MAIL_CACHE_TEMPLATES', true),
+        'cache_ttl' => env('MAIL_CACHE_TTL', 3600), // 1 hour
+    ],
+
 ];
