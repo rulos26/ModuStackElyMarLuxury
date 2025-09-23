@@ -9,3 +9,4 @@ rules:
   - "Después de crear cualquier módulo, ejecutar las pruebas PHPUnit y crear un log de resultados en la carpeta 'documentacion/logs de pruebas'."
   - "Cada vista creada debe estar registrada en el archivo web.php y agregada al menú de adminlte.php en la sección menu con su respectivo rol de acceso."
   - "Todas las vistas deben usar @extends('adminlte::page')  en lugar de @extends('layouts.app')."
+  - "ANTES de escribir fechas en archivos .md, SIEMPRE verificar la fecha actual del sistema usando el comando 'date' para asegurar que las fechas sean correctas y actuales."

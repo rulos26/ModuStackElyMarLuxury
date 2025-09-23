@@ -32,6 +32,7 @@ class SettingsController extends Controller
         $request->validate([
             'app_name' => 'required|string|max:255',
             'app_logo' => 'nullable|string',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'app_icon' => 'required|string|max:255',
             'app_title_prefix' => 'nullable|string|max:255',
             'app_title_postfix' => 'nullable|string|max:255',
@@ -44,9 +45,19 @@ class SettingsController extends Controller
                 ->withInput();
         }
 
+        // Manejar logo
+        $logoValue = $request->app_logo;
+
+        // Si se subió un archivo, convertir a base64
+        if ($request->hasFile('logo_file')) {
+            $file = $request->file('logo_file');
+            $imageData = file_get_contents($file->getPathname());
+            $logoValue = 'data:' . $file->getMimeType() . ';base64,' . base64_encode($imageData);
+        }
+
         // Actualizar configuraciones
         AppSetting::setValue('app_name', $request->app_name, 'string', 'Nombre de la aplicación');
-        AppSetting::setValue('app_logo', $request->app_logo, 'string', 'Logo de la aplicación');
+        AppSetting::setValue('app_logo', $logoValue, 'string', 'Logo de la aplicación');
         AppSetting::setValue('app_icon', $request->app_icon, 'string', 'Icono de la aplicación');
         AppSetting::setValue('app_title_prefix', $request->app_title_prefix, 'string', 'Prefijo del título');
         AppSetting::setValue('app_title_postfix', $request->app_title_postfix, 'string', 'Postfijo del título');

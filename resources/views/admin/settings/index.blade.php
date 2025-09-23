@@ -21,7 +21,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.settings.update') }}" method="POST">
+            <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -110,15 +110,56 @@
 
                 <div class="form-group">
                     <label for="app_logo">Logo de la Aplicación</label>
-                    <textarea class="form-control @error('app_logo') is-invalid @enderror"
-                              id="app_logo" name="app_logo" rows="3"
-                              placeholder="Pegar aquí el código base64 del logo o URL de la imagen">{{ old('app_logo', $settings->where('key', 'app_logo')->first()->value ?? '') }}</textarea>
-                    @error('app_logo')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <small class="form-text text-muted">
-                        Puedes pegar un código base64 de una imagen o una URL de imagen.
-                    </small>
+
+                    {{-- Vista previa del logo actual --}}
+                    <div class="mb-3">
+                        <label>Logo Actual:</label>
+                        @php
+                            $currentLogo = $settings->where('key', 'app_logo')->first()->value ?? '';
+                        @endphp
+                        @if($currentLogo)
+                            <div class="text-center">
+                                <img src="{{ $currentLogo }}" alt="Logo Actual" style="max-width: 150px; max-height: 150px;" class="img-thumbnail">
+                            </div>
+                        @else
+                            <div class="alert alert-info">No hay logo configurado</div>
+                        @endif
+                    </div>
+
+                    {{-- Opción 1: Subir archivo --}}
+                    <div class="mb-3">
+                        <label for="logo_file">Subir nueva imagen:</label>
+                        <input type="file" class="form-control @error('logo_file') is-invalid @enderror"
+                               id="logo_file" name="logo_file" accept="image/*" onchange="previewImage(this)">
+                        @error('logo_file')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="form-text text-muted">
+                            Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 2MB
+                        </small>
+                    </div>
+
+                    {{-- Vista previa de la nueva imagen --}}
+                    <div id="image-preview" class="mb-3" style="display: none;">
+                        <label>Vista previa:</label>
+                        <div class="text-center">
+                            <img id="preview-img" src="" alt="Vista previa" style="max-width: 150px; max-height: 150px;" class="img-thumbnail">
+                        </div>
+                    </div>
+
+                    {{-- Opción 2: Pegar base64 o URL --}}
+                    <div class="mb-3">
+                        <label for="app_logo">O pegar código base64/URL:</label>
+                        <textarea class="form-control @error('app_logo') is-invalid @enderror"
+                                  id="app_logo" name="app_logo" rows="3"
+                                  placeholder="Pegar aquí el código base64 del logo o URL de la imagen">{{ old('app_logo', $settings->where('key', 'app_logo')->first()->value ?? '') }}</textarea>
+                        @error('app_logo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="form-text text-muted">
+                            Puedes pegar un código base64 de una imagen o una URL de imagen.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -134,37 +175,50 @@
         </div>
     </div>
 
-    <!-- Vista previa -->
+    <!-- Vista previa del icono -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Vista Previa</h3>
+            <h3 class="card-title">Vista Previa del Icono</h3>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Logo Actual:</h5>
-                    <div class="text-center">
-                        @php
-                            $currentLogo = $settings->where('key', 'app_logo')->first()->value ?? '';
-                        @endphp
-                        @if($currentLogo)
-                            <img src="{{ $currentLogo }}" alt="Logo" style="max-width: 100px; max-height: 100px;" class="img-thumbnail">
-                        @else
-                            <div class="alert alert-info">No hay logo configurado</div>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <h5>Icono Actual:</h5>
-                    <div class="text-center">
-                        @php
-                            $currentIcon = $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-fw fa-tachometer-alt';
-                        @endphp
-                        <i class="{{ $currentIcon }} fa-3x text-primary"></i>
-                        <p class="mt-2">{{ $currentIcon }}</p>
-                    </div>
-                </div>
+            <div class="text-center">
+                @php
+                    $currentIcon = $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-fw fa-tachometer-alt';
+                @endphp
+                <i class="{{ $currentIcon }} fa-3x text-primary"></i>
+                <p class="mt-2">{{ $currentIcon }}</p>
             </div>
         </div>
     </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+
+                    // Convertir a base64 y llenar el textarea
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+
+                    img.onload = function() {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+
+                        const base64 = canvas.toDataURL('image/png');
+                        document.getElementById('app_logo').value = base64;
+                    };
+
+                    img.src = e.target.result;
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 @stop

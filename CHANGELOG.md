@@ -1,6 +1,95 @@
 # CHANGELOG
 
-## [2024-12-19] - Módulo de Configuración de Aplicación
+## [2025-09-23] - Corrección de fechas y nueva regla de verificación
+
+### Archivos modificados:
+- `CHANGELOG.md`
+- `.cursor/rules.yml`
+- `documentacion/logs de pruebas/configuration-bug-fixes-test-results-2025-09-23.md`
+
+### Cambios realizados:
+
+#### Corrección de fechas
+- **Fechas actualizadas**: Todas las fechas en CHANGELOG.md corregidas de 2024 a 2025
+- **Verificación de sistema**: Confirmada fecha actual del sistema (2025-09-23)
+- **Archivo de log**: Renombrado con fecha correcta
+
+#### Nueva regla implementada
+- **Regla agregada**: "ANTES de escribir fechas en archivos .md, SIEMPRE verificar la fecha actual del sistema usando el comando 'date'"
+- **Propósito**: Evitar errores de fecha en documentación
+- **Aplicación**: Obligatoria para todos los cambios futuros
+
+### Resultados de las correcciones:
+- **Fechas corregidas**: ✅ Todas las entradas del CHANGELOG actualizadas
+- **Regla implementada**: ✅ Nueva regla agregada a rules.yml
+- **Documentación consistente**: ✅ Fechas coherentes en todo el proyecto
+
+### Instrucciones de deploy:
+1. Las correcciones de fecha son automáticas
+2. La nueva regla se aplicará automáticamente en futuros cambios
+3. Verificar fechas antes de cualquier documentación
+
+---
+
+## [2025-09-23] - Corrección de bugs en configuración dinámica y mejora de funcionalidades
+
+### Archivos modificados:
+- `resources/views/vendor/adminlte/partials/common/brand-logo-xl.blade.php`
+- `resources/views/vendor/adminlte/partials/common/brand-logo-xs.blade.php`
+- `resources/views/vendor/adminlte/master.blade.php`
+- `resources/views/vendor/adminlte/partials/navbar/menu-item-dropdown-user-menu.blade.php`
+- `resources/views/admin/settings/index.blade.php`
+- `app/Http/Controllers/Admin/SettingsController.php`
+- `app/Providers/ViewServiceProvider.php`
+- `bootstrap/providers.php`
+
+### Cambios realizados:
+
+#### Corrección de bugs identificados
+- **Problema 1**: El nombre de la aplicación no se actualizaba dinámicamente
+- **Problema 2**: El logo no se mostraba correctamente en las vistas de AdminLTE
+- **Problema 3**: El menú de usuario no funcionaba (cerrar sesión y perfil)
+
+#### Implementación de configuración dinámica
+- **ViewServiceProvider**: Creado para compartir configuración con todas las vistas
+- **Variables globales**: `$appConfig` disponible en todas las vistas
+- **Caché optimizado**: Sistema de caché que se limpia automáticamente
+
+#### Mejoras en la interfaz de configuración
+- **Subida de archivos**: Funcionalidad para subir imágenes de logo
+- **Vista previa**: Preview en tiempo real de logos e iconos
+- **Validación**: Validación de tipos de archivo (JPG, PNG, GIF) y tamaño (2MB)
+- **Conversión automática**: Imágenes subidas se convierten a base64 automáticamente
+
+#### Correcciones de compatibilidad
+- **Bootstrap 5**: Actualizado dropdown del menú de usuario para Bootstrap 5
+- **Atributos corregidos**: `data-toggle` → `data-bs-toggle`, `dropdown-menu-right` → `dropdown-menu-end`
+
+#### Funcionalidades implementadas
+- **Logo dinámico**: Las vistas de AdminLTE ahora usan el logo configurado
+- **Nombre dinámico**: El nombre de la aplicación se actualiza en tiempo real
+- **Título dinámico**: El título de la página usa configuración dinámica
+- **Menú funcional**: Cerrar sesión y perfil de usuario funcionan correctamente
+
+### Resultados de las correcciones:
+- **Nombre de aplicación**: ✅ Se actualiza dinámicamente
+- **Logo**: ✅ Se muestra correctamente y permite subida de archivos
+- **Menú de usuario**: ✅ Funciona correctamente para cerrar sesión
+- **Configuración**: ✅ Se aplica en tiempo real sin recargar página
+
+### Instrucciones de deploy:
+1. Los cambios están listos para producción
+2. Limpiar caché: `php artisan cache:clear && php artisan config:clear && php artisan view:clear`
+3. Verificar que el ViewServiceProvider esté registrado en `bootstrap/providers.php`
+4. Probar funcionalidad en `/admin/settings`
+
+### URLs de acceso:
+- **Configuración**: `/admin/settings`
+- **Requisitos**: Permiso `manage-settings`
+
+---
+
+## [2025-09-22] - Módulo de Configuración de Aplicación
 
 ### Archivos modificados:
 - `app/Models/AppSetting.php`
@@ -80,7 +169,7 @@
 
 ---
 
-## [2024-12-19] - Módulo de Administración de Usuarios, Roles y Permisos
+## [2025-09-22] - Módulo de Administración de Usuarios, Roles y Permisos
 
 ### Archivos modificados:
 - `app/Http/Controllers/Admin/UserController.php`
@@ -161,7 +250,7 @@
 
 ---
 
-## [2024-12-19] - Implementación de reglas de testing y verificación de vistas
+## [2025-09-22] - Implementación de reglas de testing y verificación de vistas
 
 ### Archivos modificados:
 - `.cursor/rules.yml`
@@ -205,7 +294,7 @@
 
 ---
 
-## [2024-12-19] - Instalación de Laravel Permission y configuración de roles
+## [2025-09-22] - Instalación de Laravel Permission y configuración de roles
 
 ### Archivos modificados:
 - `app/Models/User.php`
@@ -269,7 +358,7 @@
 
 ---
 
-## [2024-12-19] - Migración completa a CDN y corrección de imágenes base64
+## [2025-09-22] - Migración completa a CDN y corrección de imágenes base64
 
 ### Archivos modificados:
 - `resources/views/vendor/adminlte/master.blade.php`
