@@ -27,27 +27,27 @@
             </div>
             <div class="card-body p-0">
                 <nav class="nav nav-pills flex-column">
-                    <a href="{{ route('admin.settings.section', 'general') }}" 
+                    <a href="{{ route('admin.settings.section', 'general') }}"
                        class="nav-link {{ request()->route('section') == 'general' ? 'active' : '' }}">
                         <i class="fas fa-globe"></i> General
                         <small class="text-muted d-block">Información básica</small>
                     </a>
-                    <a href="{{ route('admin.settings.section', 'appearance') }}" 
+                    <a href="{{ route('admin.settings.section', 'appearance') }}"
                        class="nav-link {{ request()->route('section') == 'appearance' ? 'active' : '' }}">
                         <i class="fas fa-palette"></i> Apariencia
                         <small class="text-muted d-block">Logo, colores, tema</small>
                     </a>
-                    <a href="{{ route('admin.settings.section', 'security') }}" 
+                    <a href="{{ route('admin.settings.section', 'security') }}"
                        class="nav-link {{ request()->route('section') == 'security' ? 'active' : '' }}">
                         <i class="fas fa-shield-alt"></i> Seguridad
                         <small class="text-muted d-block">Contraseñas, sesiones</small>
                     </a>
-                    <a href="{{ route('admin.settings.section', 'notifications') }}" 
+                    <a href="{{ route('admin.settings.section', 'notifications') }}"
                        class="nav-link {{ request()->route('section') == 'notifications' ? 'active' : '' }}">
                         <i class="fas fa-bell"></i> Notificaciones
                         <small class="text-muted d-block">Email, push, alertas</small>
                     </a>
-                    <a href="{{ route('admin.settings.section', 'advanced') }}" 
+                    <a href="{{ route('admin.settings.section', 'advanced') }}"
                        class="nav-link {{ request()->route('section') == 'advanced' ? 'active' : '' }}">
                         <i class="fas fa-cogs"></i> Avanzado
                         <small class="text-muted d-block">Debug, caché, logs</small>

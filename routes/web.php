@@ -21,8 +21,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Permisos
     Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class);
 
-    // Configuración
-    Route::get('settings', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
-    Route::put('settings', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+    // Configuración - Dashboard modular
+    Route::get('settings', [App\Http\Controllers\Admin\SettingsDashboardController::class, 'index'])->name('settings.dashboard');
+    Route::get('settings/section/{section}', [App\Http\Controllers\Admin\SettingsDashboardController::class, 'section'])->name('settings.section');
+    Route::put('settings/section/{section}', [App\Http\Controllers\Admin\SettingsDashboardController::class, 'updateSection'])->name('settings.update.section');
+
+    // Configuración legacy (mantener compatibilidad)
+    Route::get('settings/legacy', [App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.legacy');
+    Route::put('settings/legacy', [App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update.legacy');
     Route::post('settings/reset', [App\Http\Controllers\Admin\SettingsController::class, 'reset'])->name('settings.reset');
 });

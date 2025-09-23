@@ -15,9 +15,9 @@ class SettingsDashboardController extends Controller
     public function index()
     {
         $this->authorize('manage-settings');
-        
+
         $settings = AppSetting::all()->keyBy('key');
-        
+
         return view('admin.settings.dashboard', compact('settings'));
     }
 
@@ -27,16 +27,16 @@ class SettingsDashboardController extends Controller
     public function section($section)
     {
         $this->authorize('manage-settings');
-        
+
         // Validar sección
         $validSections = ['general', 'appearance', 'security', 'notifications', 'advanced'];
-        
+
         if (!in_array($section, $validSections)) {
             abort(404, 'Sección no encontrada');
         }
-        
+
         $settings = AppSetting::all()->keyBy('key');
-        
+
         return view("admin.settings.sections.{$section}", compact('settings'));
     }
 
@@ -46,24 +46,24 @@ class SettingsDashboardController extends Controller
     public function updateSection(Request $request, $section)
     {
         $this->authorize('manage-settings');
-        
+
         $validSections = ['general', 'appearance', 'security', 'notifications', 'advanced'];
-        
+
         if (!in_array($section, $validSections)) {
             abort(404, 'Sección no encontrada');
         }
-        
+
         // Validar según la sección
         $validationRules = $this->getValidationRules($section);
-        
+
         $request->validate($validationRules);
-        
+
         // Actualizar configuraciones según la sección
         $this->updateSettingsBySection($request, $section);
-        
+
         // Limpiar caché
         AppConfigHelper::clearCache();
-        
+
         return redirect()
             ->route('admin.settings.section', $section)
             ->with('success', "Configuración de {$this->getSectionName($section)} actualizada exitosamente.");
