@@ -1,0 +1,25 @@
+/* Application Styles */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom AdminLTE Styles */
+@import url('https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css');
+
+/* Custom Styles */
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.sidebar {
+    background-color: #343a40;
+}
+
+.main-header {
+    background-color: #007bff;
+}
+
+.content-wrapper {
+    background-color: #f4f6f9;
+}
+

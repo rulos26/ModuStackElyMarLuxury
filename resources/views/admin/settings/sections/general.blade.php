@@ -302,6 +302,17 @@ $(document).ready(function() {
     setTimeout(function() {
         $('.alert').fadeOut('slow');
     }, 5000);
+
+    // Prevenir URLs con hash
+    $('a[href="#"]').on('click', function(e) {
+        e.preventDefault();
+        console.log('Enlace con # prevenido:', this);
+    });
+
+    // Limpiar hash de la URL si existe
+    if (window.location.hash) {
+        window.history.replaceState('', document.title, window.location.pathname);
+    }
 });
 </script>
 @stop

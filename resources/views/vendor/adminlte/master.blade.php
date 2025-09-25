@@ -14,9 +14,9 @@
 
     {{-- Title --}}
     <title>
-        @yield('title_prefix', $appConfig['title_prefix'] ?? '')
-        @yield('title', $appConfig['name'] ?? 'AdminLTE 3')
-        @yield('title_postfix', $appConfig['title_postfix'] ?? '')
+        @yield('title_prefix', config('adminlte.title_prefix', ''))
+        @yield('title', config('adminlte.title', 'AdminLTE 3'))
+        @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
@@ -40,21 +40,13 @@
             @break
 
             @default
-                <!-- FontAwesome CDN -->
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=1" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-                <!-- OverlayScrollbars CDN -->
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/css/OverlayScrollbars.min.css?v=1" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-                <!-- AdminLTE CDN -->
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css?v=1" crossorigin="anonymous">
+                <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+                <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+                <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
 
                 @if(config('adminlte.google_fonts.allowed', true))
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
                 @endif
-
-                {{-- Custom AdminLTE Styles --}}
-                <link rel="stylesheet" href="{{ asset('css/custom-adminlte.css') }}">
         @endswitch
     @endif
 
@@ -117,17 +109,10 @@
             @break
 
             @default
-                <!-- jQuery CDN -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js?v=1" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-                <!-- Bootstrap CDN -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js?v=1" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-                <!-- OverlayScrollbars CDN -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/js/jquery.overlayScrollbars.min.js?v=1" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-                <!-- AdminLTE CDN -->
-                <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js?v=1" crossorigin="anonymous"></script>
+                <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+                <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+                <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
         @endswitch
     @endif
 

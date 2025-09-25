@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AppSetting;
 use App\Helpers\AppConfigHelper;
+use App\Services\LogoService;
+use App\Services\FaviconService;
 
 class SettingsDashboardController extends Controller
 {
@@ -85,6 +87,7 @@ class SettingsDashboardController extends Controller
             'appearance' => [
                 'app_logo' => 'nullable|string',
                 'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'favicon_file' => 'nullable|file|mimes:ico|max:1024',
                 'app_icon' => 'required|string|max:255',
                 'app_title_prefix' => 'nullable|string|max:255',
                 'app_title_postfix' => 'nullable|string|max:255',
@@ -161,12 +164,42 @@ class SettingsDashboardController extends Controller
      */
     private function updateAppearanceSettings(Request $request)
     {
-        // Manejar logo
-        $logoValue = $request->app_logo;
+        // Manejar logo - NUEVO ENFOQUE CON ARCHIVOS
+        $logoValue = $request->app_logo; // Mantener valor actual por defecto
+
         if ($request->hasFile('logo_file')) {
-            $file = $request->file('logo_file');
-            $imageData = file_get_contents($file->getPathname());
-            $logoValue = 'data:' . $file->getMimeType() . ';base64,' . base64_encode($imageData);
+            try {
+                // Asegurar que existe el directorio
+                LogoService::ensureLogoDirectory();
+
+                // Subir y reemplazar el logo
+                $logoValue = LogoService::uploadLogo($request->file('logo_file'));
+
+            } catch (\Exception $e) {
+                // Si hay error, mantener el valor actual
+                return redirect()
+                    ->back()
+                    ->withErrors(['logo_file' => $e->getMessage()])
+                    ->withInput();
+            }
+        }
+
+        // Manejar favicon - FLUJO SIMPLE PARA .ICO
+        if ($request->hasFile('favicon_file')) {
+            try {
+                // Subir archivo .ico usando el servicio
+                $faviconFile = FaviconService::uploadFavicon($request->file('favicon_file'));
+                
+                // Guardar información
+                AppSetting::setValue('favicon_uploaded_at', now()->toDateTimeString(), 'string', 'Fecha de subida de favicon');
+                
+            } catch (\Exception $e) {
+                // Si hay error, mostrar mensaje
+                return redirect()
+                    ->back()
+                    ->withErrors(['favicon_file' => $e->getMessage()])
+                    ->withInput();
+            }
         }
 
         AppSetting::setValue('app_logo', $logoValue, 'string', 'Logo de la aplicación');

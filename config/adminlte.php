@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzMiIGhlaWdodD0iMzMiIHZpZXdCb3g9IjAgMCAzMyAzMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMzIiBoZWlnaHQ9IjMzIiByeD0iNCIgZmlsbD0iIzAwN2JmZiIvPgo8dGV4dCB4PSIxNi41IiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+',
+    'logo' => '<b>Ely Mar Luxury</b>',
+    'logo_img' => '/storage/logos/app-logo.jpeg',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Ely Mar Luxury Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,10 +84,10 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8dGV4dCB4PSIzMCIgeT0iMzgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkw8L3RleHQ+Cjwvc3ZnPg==',
-            'alt' => 'Auth Logo',
+            'path' => '/storage/logos/app-logo.jpeg',
+            'alt' => 'Ely Mar Luxury',
             'class' => '',
             'width' => 50,
             'height' => 50,
@@ -113,8 +113,8 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzAwN2JmZiIvPgo8dGV4dCB4PSIzMCIgeT0iMzgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkw8L3RleHQ+Cjwvc3ZnPg==',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => '/storage/logos/app-logo.jpeg',
+            'alt' => 'Ely Mar Luxury Preloader',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -134,11 +134,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => true,
+    'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => true,
-    'usermenu_desc' => true,
-    'usermenu_profile_url' => 'admin/profile',
+    'usermenu_image' => false,
+    'usermenu_desc' => false,
+    'usermenu_profile_url' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -283,7 +283,6 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'enabled_laravel_mix' => false,
     'laravel_css_path' => 'css/app.css',
     'laravel_js_path' => 'js/app.js',
 
@@ -316,130 +315,75 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
+
+        // Dashboard
         [
             'text' => 'Dashboard',
             'url' => 'home',
             'icon' => 'fas fa-fw fa-tachometer-alt',
             'can' => 'view-dashboard',
         ],
-        ['header' => 'ADMINISTRACIÓN'],
+
+        // Gestión de usuarios
         [
             'text' => 'Usuarios',
             'url' => 'admin/users',
             'icon' => 'fas fa-fw fa-users',
             'can' => 'manage-users',
         ],
+
+        // Gestión de roles
         [
             'text' => 'Roles',
             'url' => 'admin/roles',
             'icon' => 'fas fa-fw fa-user-tag',
             'can' => 'manage-roles',
         ],
+
+        // Gestión de permisos
         [
             'text' => 'Permisos',
             'url' => 'admin/permissions',
             'icon' => 'fas fa-fw fa-key',
             'can' => 'manage-permissions',
         ],
+
+        // Configuración
         [
             'text' => 'Configuración',
             'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-cog',
+            'icon' => 'fas fa-fw fa-cogs',
             'can' => 'manage-settings',
         ],
+
+        // Reportes
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Reportes',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-chart-bar',
+            'can' => 'view-reports',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'text' => 'Reporte de usuarios',
                     'url' => '#',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
+                    'text' => 'Reporte de actividades',
                     'url' => '#',
                 ],
             ],
         ],
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],
-    ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Menu (Navbar User Menu)
-    |--------------------------------------------------------------------------
-    |
-    | Configuration for the user menu in the navbar.
-    |
-    */
-
-    'navbar-user' => [
+        ['header' => 'account_settings'],
         [
-            'text' => 'profile',
-            'url' => 'admin/profile',
+            'text' => 'Perfil',
+            'url' => '#',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'settings',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-cog',
+            'text' => 'Cambiar contraseña',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-lock',
         ],
     ],
 

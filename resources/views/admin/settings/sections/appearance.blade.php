@@ -1,18 +1,12 @@
-@extends('adminlte::page')
+@extends('vendor.adminlte.page')
 
 @section('title', 'Configuración de Apariencia')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="m-0">
-            <i class="fas fa-palette"></i> Configuración de Apariencia
-        </h1>
-        <div class="btn-group">
-            <a href="{{ route('admin.settings.dashboard') }}" class="btn btn-outline-secondary btn-sm">
-                <i class="fas fa-arrow-left"></i> Volver al Dashboard
-            </a>
-        </div>
-    </div>
+    <h1>
+        <i class="fas fa-palette"></i> Configuración de Apariencia
+    </h1>
+    <p>Personalice el aspecto visual de la aplicación</p>
 @stop
 
 @section('content')
@@ -27,19 +21,24 @@
             </div>
             <div class="card-body p-0">
                 <nav class="nav nav-pills flex-column">
-                    <a href="{{ route('admin.settings.section', 'general') }}" class="nav-link">
+                    <a href="{{ route('admin.settings.section', 'general') }}"
+                       class="nav-link {{ request()->route('section') == 'general' ? 'active' : '' }}">
                         <i class="fas fa-globe"></i> General
                     </a>
-                    <a href="{{ route('admin.settings.section', 'appearance') }}" class="nav-link active">
-                        <i class="fas fa-palette"></i> Apariencia
+                    <a href="{{ route('admin.settings.section', 'appearance') }}"
+                       class="nav-link {{ request()->route('section') == 'appearance' ? 'active' : '' }}">
+                        <i class="fas fa-paint-brush"></i> Apariencia
                     </a>
-                    <a href="{{ route('admin.settings.section', 'security') }}" class="nav-link">
+                    <a href="{{ route('admin.settings.section', 'security') }}"
+                       class="nav-link {{ request()->route('section') == 'security' ? 'active' : '' }}">
                         <i class="fas fa-shield-alt"></i> Seguridad
                     </a>
-                    <a href="{{ route('admin.settings.section', 'notifications') }}" class="nav-link">
+                    <a href="{{ route('admin.settings.section', 'notifications') }}"
+                       class="nav-link {{ request()->route('section') == 'notifications' ? 'active' : '' }}">
                         <i class="fas fa-bell"></i> Notificaciones
                     </a>
-                    <a href="{{ route('admin.settings.section', 'advanced') }}" class="nav-link">
+                    <a href="{{ route('admin.settings.section', 'advanced') }}"
+                       class="nav-link {{ request()->route('section') == 'advanced' ? 'active' : '' }}">
                         <i class="fas fa-cogs"></i> Avanzado
                     </a>
                 </nav>
@@ -65,12 +64,23 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Logo Actual:</label>
-                                @php $currentLogo = $settings->where('key', 'app_logo')->first()->value ?? ''; @endphp
-                                @if($currentLogo)
+                                @php
+                                    $currentLogo = \App\Helpers\ViewHelper::getLogoForView();
+                                    $logoInfo = \App\Services\LogoService::getLogoInfo();
+                                @endphp
+                                @if($currentLogo && $logoInfo['exists'])
                                     <div class="text-center mb-3">
                                         <img src="{{ $currentLogo }}" alt="Logo Actual"
                                              style="max-width: 150px; max-height: 150px;"
                                              class="img-thumbnail" id="current-logo">
+                                        <div class="mt-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-file"></i> {{ basename($currentLogo) }}
+                                                @if($logoInfo['size'])
+                                                    ({{ number_format($logoInfo['size'] / 1024, 1) }} KB)
+                                                @endif
+                                            </small>
+                                        </div>
                                     </div>
                                 @else
                                     <div class="alert alert-info text-center">
@@ -81,139 +91,147 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="logo_file">Subir nueva imagen:</label>
+                                <label for="logo_file">Nuevo Logo:</label>
                                 <input type="file" class="form-control @error('logo_file') is-invalid @enderror"
                                        id="logo_file" name="logo_file" accept="image/*" onchange="previewImage(this)">
                                 @error('logo_file')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    Formatos permitidos: JPEG, PNG, JPG, GIF, SVG. Tamaño máximo: 2MB
+                                    Formatos soportados: JPG, PNG, GIF, SVG (máx. 2MB)
                                 </small>
-                            </div>
-
-                            <div id="image-preview" class="mb-3" style="display: none;">
-                                <label>Vista previa:</label>
-                                <div class="text-center">
-                                    <img id="preview-img" src="" alt="Vista previa"
-                                         style="max-width: 150px; max-height: 150px;"
-                                         class="img-thumbnail">
-                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="app_logo">O pegar código base64/URL:</label>
-                        <textarea class="form-control @error('app_logo') is-invalid @enderror"
-                                  id="app_logo" name="app_logo" rows="3"
-                                  placeholder="Pegar aquí el código base64 del logo o URL de la imagen">{{ old('app_logo', $settings->where('key', 'app_logo')->first()->value ?? '') }}</textarea>
-                        @error('app_logo')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Puede pegar un código base64 o una URL de imagen
-                        </small>
+                    <div id="image-preview" class="text-center" style="display: none;">
+                        <h5>Vista previa:</h5>
+                        <img id="preview-img" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
                     </div>
                 </div>
             </div>
 
-            <!-- Icono de la aplicación -->
+            <!-- Favicon de la aplicación -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-star"></i> Icono de la Aplicación
+                        <i class="fas fa-star"></i> Favicon de la Aplicación
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="app_icon">Icono FontAwesome:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i id="icon-preview" class="fas fa-fw {{ old('app_icon', $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-fw fa-cog') }}"></i>
-                                        </span>
+                                <label>Favicons Actuales:</label>
+                                @php
+                                    $faviconInfo = \App\Services\FaviconService::getFaviconInfo();
+                                @endphp
+                                @if(file_exists(public_path('favicons/favicon.ico')))
+                                    <div class="text-center mb-3">
+                                        <div class="border rounded p-3">
+                                            <img src="/favicons/favicon.ico" alt="Favicon Actual"
+                                                 style="max-width: 32px; max-height: 32px;"
+                                                 class="img-thumbnail">
+                                            <div class="mt-2">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-file"></i> favicon.ico
+                                                    @if(file_exists(public_path('favicons/favicon.ico')))
+                                                        ({{ number_format(filesize(public_path('favicons/favicon.ico')) / 1024, 1) }} KB)
+                                                    @endif
+                                                </small>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control @error('app_icon') is-invalid @enderror"
-                                           id="app_icon" name="app_icon"
-                                           value="{{ old('app_icon', $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-fw fa-cog') }}"
-                                           onchange="updateIconPreview(this.value)">
-                                    @error('app_icon')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                @else
+                                    <div class="alert alert-info text-center">
+                                        <i class="fas fa-info-circle"></i> No hay favicon configurado
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="favicon_file">Nuevo Favicon:</label>
+                                <input type="file" class="form-control @error('favicon_file') is-invalid @enderror"
+                                       id="favicon_file" name="favicon_file" accept=".ico,.jpg,.jpeg,.png,.gif" onchange="previewFavicon(this)">
+                                @error('favicon_file')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                                 <small class="form-text text-muted">
-                                    Ejemplo: fas fa-fw fa-home, far fa-fw fa-star, fab fa-fw fa-github
+                                    Formatos soportados: JPG, PNG, GIF, ICO (máx. 5MB, mín. 180x180px)
                                 </small>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Vista previa del icono:</label>
-                                <div class="text-center p-3 border rounded">
-                                    <i id="icon-preview-large" class="fas fa-fw {{ old('app_icon', $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-fw fa-cog') }}" style="font-size: 2rem; color: #007bff;"></i>
-                                    <div class="mt-2">
-                                        <small class="text-muted">Tamaño: 2rem</small>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+
+                    <div id="favicon-preview" class="text-center" style="display: none;">
+                        <h5>Vista previa:</h5>
+                        <img id="preview-favicon" style="max-width: 64px; max-height: 64px;" class="img-thumbnail">
+                        <div class="mt-2">
+                            <small class="text-muted">Las imágenes se convertirán automáticamente a favicon.ico</small>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Títulos de la aplicación -->
+            <!-- Icono y títulos -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-heading"></i> Títulos de la Aplicación
+                        <i class="fas fa-tag"></i> Icono y Títulos
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="app_icon">Icono de la aplicación:</label>
+                                <input type="text" class="form-control @error('app_icon') is-invalid @enderror"
+                                       id="app_icon" name="app_icon"
+                                       value="{{ old('app_icon', $settings->where('key', 'app_icon')->first()->value ?? 'fas fa-cube') }}"
+                                       placeholder="fas fa-cube">
+                                @error('app_icon')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    Clase de icono de Font Awesome
+                                </small>
+                                <div class="mt-2">
+                                    <label>Vista previa:</label>
+                                    <div class="d-flex align-items-center">
+                                        <i id="icon-preview" class="fas fa-cube fa-2x text-primary mr-2"></i>
+                                        <i id="icon-preview-large" class="fas fa-cube fa-3x text-primary"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="app_title_prefix">Prefijo del título:</label>
                                 <input type="text" class="form-control @error('app_title_prefix') is-invalid @enderror"
                                        id="app_title_prefix" name="app_title_prefix"
                                        value="{{ old('app_title_prefix', $settings->where('key', 'app_title_prefix')->first()->value ?? '') }}"
-                                       placeholder="Ej: [Admin]">
+                                       placeholder="Mi">
                                 @error('app_title_prefix')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="form-text text-muted">
-                                    Aparecerá antes del nombre de la página
-                                </small>
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="app_title_postfix">Sufijo del título:</label>
                                 <input type="text" class="form-control @error('app_title_postfix') is-invalid @enderror"
                                        id="app_title_postfix" name="app_title_postfix"
                                        value="{{ old('app_title_postfix', $settings->where('key', 'app_title_postfix')->first()->value ?? '') }}"
-                                       placeholder="Ej: - Panel de Control">
+                                       placeholder="App">
                                 @error('app_title_postfix')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="form-text text-muted">
-                                    Aparecerá después del nombre de la página
-                                </small>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Vista previa del título:</label>
-                        <div class="alert alert-light border">
-                            <strong>Ejemplo:</strong>
-                            <span id="title-preview">
-                                {{ old('app_title_prefix', $settings->where('key', 'app_title_prefix')->first()->value ?? '') }}
-                                Dashboard
-                                {{ old('app_title_postfix', $settings->where('key', 'app_title_postfix')->first()->value ?? '') }}
-                            </span>
+                            <div class="form-group">
+                                <label>Vista previa del título:</label>
+                                <div class="alert alert-light">
+                                    <strong id="title-preview">Dashboard</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -263,6 +281,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Vista previa en tiempo real -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5>Vista previa en tiempo real:</h5>
+                            <div class="border rounded p-3" id="theme-preview">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary text-white px-3 py-2 rounded mr-3" id="preview-header">
+                                        <i class="fas fa-home"></i> Dashboard
+                                    </div>
+                                    <div class="bg-light border px-3 py-2 rounded" id="preview-sidebar">
+                                        <i class="fas fa-bars"></i> Menú
+                                    </div>
+                                </div>
+                                <div class="text-muted">
+                                    <small>Los cambios se aplicarán automáticamente al guardar</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -271,14 +309,17 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-success btn-lg">
-                                <i class="fas fa-save"></i> Guardar Configuración
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> Guardar Cambios
                             </button>
+                            <a href="{{ route('admin.settings.dashboard') }}" class="btn btn-secondary btn-lg ml-2">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
                         </div>
                         <div class="col-md-6 text-right">
-                            <a href="{{ route('admin.settings.dashboard') }}" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
+                            <button type="button" class="btn btn-outline-danger" onclick="resetForm()">
+                                <i class="fas fa-undo"></i> Restablecer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -296,19 +337,17 @@ function previewImage(input) {
         reader.onload = function(e) {
             document.getElementById('preview-img').src = e.target.result;
             document.getElementById('image-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-            // Convertir a base64 automáticamente
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                const base64 = canvas.toDataURL('image/png');
-                document.getElementById('app_logo').value = base64;
-            };
-            img.src = e.target.result;
+function previewFavicon(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-favicon').src = e.target.result;
+            document.getElementById('favicon-preview').style.display = 'block';
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -334,15 +373,59 @@ function updateTitlePreview() {
     }
 }
 
+// Actualizar vista previa del tema en tiempo real
+function updateThemePreview() {
+    const themeColor = document.getElementById('theme_color').value;
+    const sidebarStyle = document.getElementById('sidebar_style').value;
+
+    // Aplicar color del tema
+    document.getElementById('preview-header').style.backgroundColor = themeColor;
+
+    // Aplicar estilo del sidebar
+    const sidebar = document.getElementById('preview-sidebar');
+    if (sidebarStyle === 'dark') {
+        sidebar.className = 'bg-dark text-white px-3 py-2 rounded';
+    } else {
+        sidebar.className = 'bg-light border px-3 py-2 rounded';
+    }
+}
+
+function resetForm() {
+    if (confirm('¿Estás seguro de que quieres restablecer todos los cambios?')) {
+        document.querySelector('form').reset();
+        updateTitlePreview();
+        updateThemePreview();
+    }
+}
+
 // Event listeners
 document.getElementById('app_title_prefix').addEventListener('input', updateTitlePreview);
 document.getElementById('app_title_postfix').addEventListener('input', updateTitlePreview);
+document.getElementById('theme_color').addEventListener('input', updateThemePreview);
+document.getElementById('sidebar_style').addEventListener('change', updateThemePreview);
+
+// Inicializar vista previa
+document.addEventListener('DOMContentLoaded', function() {
+    updateTitlePreview();
+    updateThemePreview();
+});
 
 // Auto-hide alerts
 $(document).ready(function() {
     setTimeout(function() {
         $('.alert').fadeOut('slow');
     }, 5000);
+
+    // Prevenir URLs con hash
+    $('a[href="#"]').on('click', function(e) {
+        e.preventDefault();
+        console.log('Enlace con # prevenido:', this);
+    });
+
+    // Limpiar hash de la URL si existe
+    if (window.location.hash) {
+        window.history.replaceState('', document.title, window.location.pathname);
+    }
 });
 </script>
 @stop
@@ -379,5 +462,12 @@ $(document).ready(function() {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
 }
+
+#theme-preview {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
 </style>
 @stop
+
+

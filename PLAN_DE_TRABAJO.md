@@ -320,3 +320,6 @@ php artisan test tests/Feature/{archivo_test}.php
 ---
 
 **🎊 ¡Con este plan tendrás un dashboard de configuración 100% funcional y profesional!**
+
+
+

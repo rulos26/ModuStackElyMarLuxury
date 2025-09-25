@@ -65,5 +65,32 @@ Route::post('notifications/send-system', [App\Http\Controllers\Admin\Notificatio
         Route::post('backups/{backup}/verify', [App\Http\Controllers\Admin\BackupController::class, 'verify'])->name('backups.verify');
         Route::get('backups-stats/statistics', [App\Http\Controllers\Admin\BackupController::class, 'stats'])->name('backups.stats');
         Route::post('backups/clean-expired', [App\Http\Controllers\Admin\BackupController::class, 'cleanExpired'])->name('backups.clean-expired');
+
+        // Mantenimiento
+        Route::get('maintenance', [App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenance.index');
+        Route::post('maintenance/enable', [App\Http\Controllers\Admin\MaintenanceController::class, 'enable'])->name('maintenance.enable');
+        Route::post('maintenance/disable', [App\Http\Controllers\Admin\MaintenanceController::class, 'disable'])->name('maintenance.disable');
+        Route::post('maintenance/allow-user', [App\Http\Controllers\Admin\MaintenanceController::class, 'allowUser'])->name('maintenance.allow-user');
+        Route::post('maintenance/remove-user', [App\Http\Controllers\Admin\MaintenanceController::class, 'removeUser'])->name('maintenance.remove-user');
+        Route::post('maintenance/allow-ip', [App\Http\Controllers\Admin\MaintenanceController::class, 'allowIp'])->name('maintenance.allow-ip');
+        Route::post('maintenance/remove-ip', [App\Http\Controllers\Admin\MaintenanceController::class, 'removeIp'])->name('maintenance.remove-ip');
+        Route::post('maintenance/clear', [App\Http\Controllers\Admin\MaintenanceController::class, 'clear'])->name('maintenance.clear');
+        Route::get('maintenance/status', [App\Http\Controllers\Admin\MaintenanceController::class, 'status'])->name('maintenance.status');
+        Route::get('maintenance/search-users', [App\Http\Controllers\Admin\MaintenanceController::class, 'searchUsers'])->name('maintenance.search-users');
+
+// Drivers Dinámicos
+Route::prefix('drivers')->name('drivers.')->middleware(['system.integration', 'integrated.logging', 'performance.monitoring', 'integrated.security', 'dynamic.driver'])->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\DynamicDriverController::class, 'index'])->name('index');
+            Route::get('/status', [App\Http\Controllers\Admin\DynamicDriverController::class, 'status'])->name('status');
+            Route::get('/supported/{service}', [App\Http\Controllers\Admin\DynamicDriverController::class, 'supportedDrivers'])->name('supported');
+            Route::post('/change', [App\Http\Controllers\Admin\DynamicDriverController::class, 'changeDriver'])->name('change');
+            Route::get('/config/{service}', [App\Http\Controllers\Admin\DynamicDriverController::class, 'getDriverConfig'])->name('config');
+            Route::post('/restore/{service}', [App\Http\Controllers\Admin\DynamicDriverController::class, 'restoreDriver'])->name('restore');
+            Route::post('/restart', [App\Http\Controllers\Admin\DynamicDriverController::class, 'restartServices'])->name('restart');
+            Route::post('/validate', [App\Http\Controllers\Admin\DynamicDriverController::class, 'validateConfig'])->name('validate');
+            Route::get('/statistics', [App\Http\Controllers\Admin\DynamicDriverController::class, 'statistics'])->name('statistics');
+        });
     });
 });
+
+Auth::routes();

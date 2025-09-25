@@ -1,8 +1,7 @@
 @extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
 @section('adminlte_css_pre')
-    <!-- iCheck Bootstrap CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css?v=1" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 @stop
 
 @php

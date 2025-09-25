@@ -285,3 +285,6 @@ class EmailTemplate extends Model
         return "<span class=\"badge badge-{$color}\">{$this->category_name}</span>";
     }
 }
+
+
+

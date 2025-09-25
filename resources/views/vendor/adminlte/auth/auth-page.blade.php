@@ -33,7 +33,7 @@
 
                 {{-- Logo Image --}}
                 @if (config('adminlte.auth_logo.enabled', false))
-                    <img src="{{ config('adminlte.auth_logo.img.path') }}"
+                    <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
                          alt="{{ config('adminlte.auth_logo.img.alt') }}"
                          @if (config('adminlte.auth_logo.img.class', null))
                             class="{{ config('adminlte.auth_logo.img.class') }}"
@@ -45,7 +45,7 @@
                             height="{{ config('adminlte.auth_logo.img.height') }}"
                          @endif>
                 @else
-                    <img src="{{ config('adminlte.logo_img') }}"
+                    <img src="{{ asset(config('adminlte.logo_img')) }}"
                          alt="{{ config('adminlte.logo_img_alt') }}" height="50">
                 @endif
 

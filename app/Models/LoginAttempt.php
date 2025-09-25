@@ -172,3 +172,6 @@ class LoginAttempt extends Model
             ->get();
     }
 }
+
+
+
