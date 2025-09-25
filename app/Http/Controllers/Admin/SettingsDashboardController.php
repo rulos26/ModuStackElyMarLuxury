@@ -8,6 +8,7 @@ use App\Models\AppSetting;
 use App\Helpers\AppConfigHelper;
 use App\Services\LogoService;
 use App\Services\FaviconService;
+use App\Services\FooterService;
 
 class SettingsDashboardController extends Controller
 {
@@ -49,6 +50,7 @@ class SettingsDashboardController extends Controller
     {
         $this->authorize('manage-settings');
 
+
         $validSections = ['general', 'appearance', 'security', 'notifications', 'advanced'];
 
         if (!in_array($section, $validSections)) {
@@ -65,6 +67,9 @@ class SettingsDashboardController extends Controller
 
         // Limpiar caché
         AppConfigHelper::clearCache();
+
+        // Limpiar cache específico del footer
+        \Illuminate\Support\Facades\Cache::forget('footer_config');
 
         return redirect()
             ->route('admin.settings.section', $section)
@@ -93,6 +98,18 @@ class SettingsDashboardController extends Controller
                 'app_title_postfix' => 'nullable|string|max:255',
                 'theme_color' => 'nullable|string|max:7',
                 'sidebar_style' => 'nullable|in:light,dark',
+                // Footer settings
+                'footer_type' => 'nullable|in:traditional,custom',
+                'footer_company_name' => 'nullable|string|max:255',
+                'footer_company_url' => 'nullable|url|max:500',
+                'footer_show_copyright' => 'nullable|in:on,off,1,0,true,false',
+                'footer_show_version' => 'nullable|in:on,off,1,0,true,false',
+                'footer_version_text' => 'nullable|string|max:50',
+                'footer_left_text' => 'nullable|string|max:255',
+                'footer_center_text' => 'nullable|string|max:255',
+                'footer_layout' => 'nullable|in:traditional,center',
+                'footer_custom_html' => 'nullable|string|max:2000',
+                'footer_use_custom_html' => 'nullable|boolean',
             ],
             'security' => [
                 'session_timeout' => 'nullable|integer|min:5|max:480',
@@ -164,6 +181,7 @@ class SettingsDashboardController extends Controller
      */
     private function updateAppearanceSettings(Request $request)
     {
+
         // Manejar logo - NUEVO ENFOQUE CON ARCHIVOS
         $logoValue = $request->app_logo; // Mantener valor actual por defecto
 
@@ -189,10 +207,10 @@ class SettingsDashboardController extends Controller
             try {
                 // Subir archivo .ico usando el servicio
                 $faviconFile = FaviconService::uploadFavicon($request->file('favicon_file'));
-                
+
                 // Guardar información
                 AppSetting::setValue('favicon_uploaded_at', now()->toDateTimeString(), 'string', 'Fecha de subida de favicon');
-                
+
             } catch (\Exception $e) {
                 // Si hay error, mostrar mensaje
                 return redirect()
@@ -208,6 +226,9 @@ class SettingsDashboardController extends Controller
         AppSetting::setValue('app_title_postfix', $request->app_title_postfix, 'string', 'Sufijo del título');
         AppSetting::setValue('theme_color', $request->theme_color, 'string', 'Color del tema');
         AppSetting::setValue('sidebar_style', $request->sidebar_style, 'string', 'Estilo del sidebar');
+
+        // Manejar configuraciones del footer
+        $this->updateFooterSettings($request);
     }
 
     /**
@@ -286,5 +307,32 @@ class SettingsDashboardController extends Controller
         ];
 
         return $names[$section] ?? ucfirst($section);
+    }
+
+    /**
+     * Update footer settings
+     */
+    private function updateFooterSettings(Request $request)
+    {
+        $footerService = app(FooterService::class);
+
+        // Determinar si usar HTML personalizado
+        $useCustomHtml = $request->footer_type === 'custom';
+        $showCenterText = $request->footer_layout === 'center';
+
+        $footerData = [
+            'use_custom_html' => $useCustomHtml,
+            'custom_html' => $useCustomHtml ? $request->footer_custom_html : '',
+            'company_name' => $request->footer_company_name ?? 'Ely Mar Luxury',
+            'company_url' => $request->footer_company_url ?? '#',
+            'show_copyright' => $request->footer_show_copyright === 'on' || $request->footer_show_copyright === '1' || $request->footer_show_copyright === true,
+            'show_version' => $request->footer_show_version === 'on' || $request->footer_show_version === '1' || $request->footer_show_version === true,
+            'version_text' => $request->footer_version_text ?? '1.0.0',
+            'left_text' => $request->footer_left_text ?? '',
+            'center_text' => $showCenterText ? $request->footer_center_text : '',
+            'show_center_text' => $showCenterText,
+        ];
+
+        $footerService->updateFooterConfig($footerData);
     }
 }

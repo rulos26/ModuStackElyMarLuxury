@@ -304,6 +304,186 @@
                 </div>
             </div>
 
+            <!-- Configuración del Footer -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-window-minimize"></i> Configuración del Footer
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @php
+                        $footerService = app(\App\Services\FooterService::class);
+                        $footerConfig = $footerService->getFooterConfig();
+                    @endphp
+
+                    <!-- Tipo de Footer -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tipo de Footer:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="footer_type" id="footer_traditional"
+                                           value="traditional" {{ !$footerConfig['use_custom_html'] ? 'checked' : '' }} onchange="toggleFooterType()">
+                                    <label class="form-check-label" for="footer_traditional">
+                                        Footer Tradicional (configuración por campos)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="footer_type" id="footer_custom"
+                                           value="custom" {{ $footerConfig['use_custom_html'] ? 'checked' : '' }} onchange="toggleFooterType()">
+                                    <label class="form-check-label" for="footer_custom">
+                                        Footer Personalizado (HTML personalizado)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración Tradicional -->
+                    <div id="footer-traditional-config">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Información de la Empresa:</h5>
+                                <div class="form-group">
+                                    <label for="footer_company_name">Nombre de la empresa:</label>
+                                    <input type="text" class="form-control" id="footer_company_name" name="footer_company_name"
+                                           value="{{ old('footer_company_name', $footerConfig['company_name']) }}"
+                                           placeholder="Ely Mar Luxury">
+                                </div>
+                                <div class="form-group">
+                                    <label for="footer_company_url">URL de la empresa:</label>
+                                    <input type="url" class="form-control" id="footer_company_url" name="footer_company_url"
+                                           value="{{ old('footer_company_url', $footerConfig['company_url']) }}"
+                                           placeholder="https://www.ejemplo.com">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Configuración de Visualización:</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="footer_show_copyright" name="footer_show_copyright"
+                                           {{ $footerConfig['show_copyright'] ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="footer_show_copyright">
+                                        Mostrar copyright
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="footer_show_version" name="footer_show_version"
+                                           {{ $footerConfig['show_version'] ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="footer_show_version">
+                                        Mostrar versión
+                                    </label>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="footer_version_text">Texto de versión:</label>
+                                    <input type="text" class="form-control" id="footer_version_text" name="footer_version_text"
+                                           value="{{ old('footer_version_text', $footerConfig['version_text']) }}"
+                                           placeholder="1.0.0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="footer_left_text">Texto izquierda (opcional):</label>
+                                    <input type="text" class="form-control" id="footer_left_text" name="footer_left_text"
+                                           value="{{ old('footer_left_text', $footerConfig['left_text']) }}"
+                                           placeholder="Texto adicional en la izquierda">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Layout del footer:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="footer_layout" id="footer_layout_traditional"
+                                               value="traditional" {{ !$footerConfig['show_center_text'] ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="footer_layout_traditional">
+                                            Tradicional (izquierda/derecha)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="footer_layout" id="footer_layout_center"
+                                               value="center" {{ $footerConfig['show_center_text'] ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="footer_layout_center">
+                                            Centrado
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="footer-center-text" style="display: {{ $footerConfig['show_center_text'] ? 'block' : 'none' }};">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="footer_center_text">Texto centrado:</label>
+                                    <input type="text" class="form-control" id="footer_center_text" name="footer_center_text"
+                                           value="{{ old('footer_center_text', $footerConfig['center_text']) }}"
+                                           placeholder="Texto centrado del footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración Personalizada -->
+                    <div id="footer-custom-config" style="display: {{ $footerConfig['use_custom_html'] ? 'block' : 'none' }};">
+                        <div class="form-group">
+                            <label for="footer_custom_html">HTML Personalizado:</label>
+                            <textarea class="form-control" id="footer_custom_html" name="footer_custom_html" rows="6"
+                                      placeholder="<footer class='main-footer'>
+    <div class='text-center'>
+        <strong>Tu contenido personalizado aquí</strong>
+    </div>
+</footer>">{{ old('footer_custom_html', $footerConfig['custom_html']) }}</textarea>
+                            <small class="form-text text-muted">
+                                Puedes usar HTML completo para personalizar el footer. Asegúrate de incluir las clases CSS necesarias.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Vista previa del footer -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Vista previa del footer:</h5>
+                            <div class="border rounded p-3 bg-light" id="footer-preview">
+                                @if($footerConfig['use_custom_html'] && !empty($footerConfig['custom_html']))
+                                    {!! $footerConfig['custom_html'] !!}
+                                @else
+                                    <footer class="main-footer">
+                                        @if($footerConfig['show_center_text'] && !empty($footerConfig['center_text']))
+                                            <div class="text-center">
+                                                <strong>{{ $footerConfig['center_text'] }}</strong>
+                                            </div>
+                                        @else
+                                            @if($footerConfig['show_copyright'])
+                                                <div class="float-right d-none d-sm-inline">
+                                                    <strong>Copyright &copy; {{ date('Y') }}
+                                                        <a href="{{ $footerConfig['company_url'] !== '#' ? $footerConfig['company_url'] : '#' }}">
+                                                            {{ $footerConfig['company_name'] }}
+                                                        </a>.
+                                                    </strong>
+                                                    Todos los derechos reservados.
+                                                </div>
+                                            @endif
+
+                                            <div class="float-left d-none d-sm-inline">
+                                                @if($footerConfig['show_version'])
+                                                    <strong>Versión</strong> {{ $footerConfig['version_text'] }}
+                                                @endif
+                                                @if(!empty($footerConfig['left_text']))
+                                                    {!! $footerConfig['left_text'] !!}
+                                                @endif
+                                            </div>
+                                        @endif
+                                        <div class="clearfix"></div>
+                                    </footer>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Botones de acción -->
             <div class="card">
                 <div class="card-body">
@@ -398,16 +578,110 @@ function resetForm() {
     }
 }
 
+// Funciones para el footer
+function toggleFooterType() {
+    const traditionalRadio = document.getElementById('footer_traditional');
+    const customRadio = document.getElementById('footer_custom');
+    const traditionalConfig = document.getElementById('footer-traditional-config');
+    const customConfig = document.getElementById('footer-custom-config');
+
+    if (traditionalRadio.checked) {
+        traditionalConfig.style.display = 'block';
+        customConfig.style.display = 'none';
+    } else {
+        traditionalConfig.style.display = 'none';
+        customConfig.style.display = 'block';
+    }
+
+    updateFooterPreview();
+}
+
+function toggleFooterLayout() {
+    const traditionalLayout = document.getElementById('footer_layout_traditional');
+    const centerTextDiv = document.getElementById('footer-center-text');
+
+    if (traditionalLayout.checked) {
+        centerTextDiv.style.display = 'none';
+    } else {
+        centerTextDiv.style.display = 'block';
+    }
+
+    updateFooterPreview();
+}
+
+function updateFooterPreview() {
+    const footerType = document.querySelector('input[name="footer_type"]:checked').value;
+    const preview = document.getElementById('footer-preview');
+
+    if (footerType === 'custom') {
+        const customHtml = document.getElementById('footer_custom_html').value;
+        preview.innerHTML = customHtml || '<footer class="main-footer"><div class="text-center"><strong>Tu contenido personalizado aquí</strong></div></footer>';
+    } else {
+        const layout = document.querySelector('input[name="footer_layout"]:checked').value;
+        const companyName = document.getElementById('footer_company_name').value || 'Ely Mar Luxury';
+        const companyUrl = document.getElementById('footer_company_url').value || '#';
+        const showCopyright = document.getElementById('footer_show_copyright').checked;
+        const showVersion = document.getElementById('footer_show_version').checked;
+        const versionText = document.getElementById('footer_version_text').value || '1.0.0';
+        const leftText = document.getElementById('footer_left_text').value || '';
+        const centerText = document.getElementById('footer_center_text').value || '';
+
+        let html = '<footer class="main-footer">';
+
+        if (layout === 'center' && centerText) {
+            html += '<div class="text-center"><strong>' + centerText + '</strong></div>';
+        } else {
+            if (showCopyright) {
+                html += '<div class="float-right d-none d-sm-inline">';
+                html += '<strong>Copyright &copy; ' + new Date().getFullYear() + ' <a href="' + companyUrl + '">' + companyName + '</a>.</strong>';
+                html += ' Todos los derechos reservados.';
+                html += '</div>';
+            }
+
+            html += '<div class="float-left d-none d-sm-inline">';
+            if (showVersion) {
+                html += '<strong>Versión</strong> ' + versionText;
+            }
+            if (leftText) {
+                html += ' ' + leftText;
+            }
+            html += '</div>';
+        }
+
+        html += '<div class="clearfix"></div></footer>';
+        preview.innerHTML = html;
+    }
+}
+
 // Event listeners
 document.getElementById('app_title_prefix').addEventListener('input', updateTitlePreview);
 document.getElementById('app_title_postfix').addEventListener('input', updateTitlePreview);
 document.getElementById('theme_color').addEventListener('input', updateThemePreview);
 document.getElementById('sidebar_style').addEventListener('change', updateThemePreview);
 
+// Footer event listeners
+document.querySelectorAll('input[name="footer_type"]').forEach(radio => {
+    radio.addEventListener('change', toggleFooterType);
+});
+
+document.querySelectorAll('input[name="footer_layout"]').forEach(radio => {
+    radio.addEventListener('change', toggleFooterLayout);
+});
+
+document.getElementById('footer_company_name').addEventListener('input', updateFooterPreview);
+document.getElementById('footer_company_url').addEventListener('input', updateFooterPreview);
+document.getElementById('footer_show_copyright').addEventListener('change', updateFooterPreview);
+document.getElementById('footer_show_version').addEventListener('change', updateFooterPreview);
+document.getElementById('footer_version_text').addEventListener('input', updateFooterPreview);
+document.getElementById('footer_left_text').addEventListener('input', updateFooterPreview);
+document.getElementById('footer_center_text').addEventListener('input', updateFooterPreview);
+document.getElementById('footer_custom_html').addEventListener('input', updateFooterPreview);
+
 // Inicializar vista previa
 document.addEventListener('DOMContentLoaded', function() {
     updateTitlePreview();
     updateThemePreview();
+    updateFooterPreview();
 });
 
 // Auto-hide alerts

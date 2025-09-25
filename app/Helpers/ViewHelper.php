@@ -24,6 +24,14 @@ class ViewHelper
                     return $parsedUrl['path'] ?? $logoPath;
                 }
 
+                // Verificar que el archivo existe
+                if (str_starts_with($logoPath, '/storage/')) {
+                    $filePath = public_path($logoPath);
+                    if (file_exists($filePath)) {
+                        return $logoPath;
+                    }
+                }
+
                 return $logoPath;
             }
 
@@ -31,7 +39,14 @@ class ViewHelper
             // Si hay error, usar logo por defecto
         }
 
-        // Logo por defecto
+        // Verificar si existe el logo por defecto en storage
+        $defaultLogoPath = '/storage/logos/app-logo.jpeg';
+        $defaultFilePath = public_path($defaultLogoPath);
+        if (file_exists($defaultFilePath)) {
+            return $defaultLogoPath;
+        }
+
+        // Logo por defecto como data URI
         return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzMiIGhlaWdodD0iMzMiIHZpZXdCb3g9IjAgMCAzMyAzMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMzIiBoZWlnaHQ9IjMzIiByeD0iNCIgZmlsbD0iIzAwN2JmZiIvPgo8dGV4dCB4PSIxNi41IiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TDwvdGV4dD4KPC9zdmc+';
     }
 
