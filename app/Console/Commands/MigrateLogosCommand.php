@@ -126,3 +126,5 @@ class MigrateLogosCommand extends Command
     }
 }
 
+
+

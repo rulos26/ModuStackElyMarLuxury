@@ -129,3 +129,5 @@ class TestApplicationQueriesCommand extends Command
     }
 }
 
+
+

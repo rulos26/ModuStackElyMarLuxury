@@ -80,3 +80,5 @@ class TestUrlHashFixCommand extends Command
     }
 }
 
+
+

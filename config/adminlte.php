@@ -398,6 +398,12 @@ return [
             'icon' => 'fas fa-fw fa-folder-open',
             'can' => 'manage-subcategories',
         ],
+        [
+            'text' => 'Piezas',
+            'url' => 'admin/pieces',
+            'icon' => 'fas fa-fw fa-cube',
+            'can' => 'manage-categories',
+        ],
     ],
 
     /*

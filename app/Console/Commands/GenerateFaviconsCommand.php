@@ -74,3 +74,5 @@ class GenerateFaviconsCommand extends Command
     }
 }
 
+
+

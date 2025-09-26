@@ -97,5 +97,6 @@ Route::prefix('drivers')->name('drivers.')->middleware(['system.integration', 'i
 Route::prefix('admin')->middleware(['auth', 'can:manage-categories'])->group(function () {
     Route::resource('categories', App\Http\Controllers\CategoryController::class);
     Route::resource('subcategories', App\Http\Controllers\SubcategoryController::class);
+    Route::resource('pieces', App\Http\Controllers\PieceController::class);
 });
 Auth::routes();

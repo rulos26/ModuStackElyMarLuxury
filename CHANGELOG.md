@@ -1,5 +1,71 @@
 # CHANGELOG
 
+## [2025-09-26] - Sistema Completo de Piezas con Relaciones
+
+### 🎯 **NUEVO MÓDULO: Gestión de Piezas**
+
+**Implementación completa del CRUD de piezas con relaciones a categorías y subcategorías**
+
+#### 📁 **Archivos Creados/Modificados:**
+
+**Controlador:**
+- `app/Http/Controllers/PieceController.php` - CRUD completo con relaciones
+
+**Vistas (5 archivos):**
+- `resources/views/piece/index.blade.php` - Lista con relaciones mostradas
+- `resources/views/piece/create.blade.php` - Crear pieza
+- `resources/views/piece/edit.blade.php` - Editar pieza
+- `resources/views/piece/show.blade.php` - Ver pieza con detalles completos
+- `resources/views/piece/form.blade.php` - Formulario con selectores de categorías
+
+**Configuración:**
+- `routes/web.php` - Ruta agregada al grupo admin
+- `config/adminlte.php` - Menú "Piezas" agregado
+
+#### 🔗 **Relaciones Implementadas:**
+- **Pieza → Categoría**: `$piece->category->name`
+- **Pieza → Subcategoría**: `$piece->subcategory->name`
+- **Carga optimizada**: `with(['category', 'subcategory'])`
+
+#### 🎨 **Características del Formulario:**
+- **Selectores desplegables** para categorías y subcategorías
+- **Campos numéricos** para precios y peso
+- **Selector de estado** con opciones en español
+- **Validación completa** con mensajes en español
+
+#### 📊 **Tabla de Piezas:**
+- **Código único** de la pieza
+- **Nombre y descripción**
+- **Categoría y subcategoría** (nombres, no IDs)
+- **Precio de venta** formateado
+- **Estado** con badges de colores
+- **Acciones** (Ver, Editar, Eliminar) en español
+
+#### ✅ **Pruebas CRUD:**
+```
+🧪 Probando CRUD de piezas...
+✅ Pieza creada con ID: 1
+✅ Pieza encontrada: Pieza de Prueba CRUD
+   Categoría: Categoría de Prueba
+   Subcategoría: Subcategoría de Prueba
+✅ Pieza actualizada
+✅ Pieza eliminada
+🎉 ¡CRUD de piezas funciona correctamente!
+```
+
+#### 🔐 **Seguridad:**
+- **Solo administradores** pueden acceder
+- **Middleware de autenticación** aplicado
+- **Permisos** basados en roles
+
+#### 🎯 **Resultado:**
+- **CRUD completo** de piezas funcional
+- **Relaciones mostradas** correctamente
+- **Interfaz en español** al 100%
+- **Integrado** en el menú de administración
+
+---
+
 ## [2025-09-26] - Traducción a Español: Vistas de Categorías y Subcategorías
 
 ### 🎯 **TRADUCCIÓN COMPLETA: Interfaz en Español**

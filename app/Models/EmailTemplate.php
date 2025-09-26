@@ -288,3 +288,5 @@ class EmailTemplate extends Model
 
 
 
+
+
