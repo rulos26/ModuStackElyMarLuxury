@@ -26,6 +26,10 @@ class PieceRequest extends FormRequest
 			'name' => 'required|string',
 			'description' => 'string',
 			'category_id' => 'required',
+			'subcategory_id' => 'nullable',
+			'weight' => 'nullable|numeric|min:0',
+			'cost_price' => 'nullable|numeric|min:0',
+			'sale_price' => 'nullable|numeric|min:0',
 			'status' => 'required',
         ];
     }

@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PieceRequest;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class PieceController extends Controller
@@ -37,7 +38,15 @@ class PieceController extends Controller
      */
     public function store(PieceRequest $request): RedirectResponse
     {
-        Piece::create($request->validated());
+        $validatedData = $request->validated();
+
+        // Log para debug
+        Log::info('Datos validados para crear pieza:', $validatedData);
+
+        $piece = Piece::create($validatedData);
+
+        // Log para verificar que se creó correctamente
+        Log::info('Pieza creada con ID:', ['id' => $piece->id, 'data' => $piece->toArray()]);
 
         return Redirect::route('pieces.index')
             ->with('success', 'Pieza creada exitosamente.');
@@ -68,7 +77,16 @@ class PieceController extends Controller
      */
     public function update(PieceRequest $request, Piece $piece): RedirectResponse
     {
-        $piece->update($request->validated());
+        $validatedData = $request->validated();
+
+        // Log para debug
+        Log::info('Datos validados para actualizar pieza:', $validatedData);
+        Log::info('Pieza antes de actualizar:', $piece->toArray());
+
+        $piece->update($validatedData);
+
+        // Log para verificar que se actualizó correctamente
+        Log::info('Pieza después de actualizar:', $piece->fresh()->toArray());
 
         return Redirect::route('pieces.index')
             ->with('success', 'Pieza actualizada exitosamente');
