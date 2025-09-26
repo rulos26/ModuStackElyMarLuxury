@@ -323,7 +323,7 @@ class SmtpConfigController extends Controller
     /**
      * Validar configuración
      */
-    public function validate(SmtpConfig $smtpConfig)
+    public function validateConfiguration(SmtpConfig $smtpConfig)
     {
         try {
             $validation = $this->smtpConfigService->validateConfiguration($smtpConfig);

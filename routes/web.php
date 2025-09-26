@@ -47,7 +47,7 @@ Route::post('smtp-configs/{smtpConfig}/test', [App\Http\Controllers\Admin\SmtpCo
 Route::post('smtp-configs/migrate-env', [App\Http\Controllers\Admin\SmtpConfigController::class, 'migrateFromEnv'])->name('smtp-configs.migrate-env');
 Route::get('smtp-configs-stats/statistics', [App\Http\Controllers\Admin\SmtpConfigController::class, 'statistics'])->name('smtp-configs.statistics');
 Route::get('smtp-configs/available', [App\Http\Controllers\Admin\SmtpConfigController::class, 'available'])->name('smtp-configs.available');
-Route::get('smtp-configs/{smtpConfig}/validate', [App\Http\Controllers\Admin\SmtpConfigController::class, 'validate'])->name('smtp-configs.validate');
+Route::get('smtp-configs/{smtpConfig}/validate', [App\Http\Controllers\Admin\SmtpConfigController::class, 'validateConfiguration'])->name('smtp-configs.validate');
 
 // Notificaciones
 Route::resource('notifications', App\Http\Controllers\Admin\NotificationController::class);
@@ -93,4 +93,9 @@ Route::prefix('drivers')->name('drivers.')->middleware(['system.integration', 'i
     });
 });
 
+// Rutas de categorías y subcategorías (solo para administradores)
+Route::prefix('admin')->middleware(['auth', 'can:manage-categories'])->group(function () {
+    Route::resource('categories', App\Http\Controllers\CategoryController::class);
+    Route::resource('subcategories', App\Http\Controllers\SubcategoryController::class);
+});
 Auth::routes();

@@ -385,6 +385,19 @@ return [
             'url' => '#',
             'icon' => 'fas fa-fw fa-lock',
         ],
+        ['header' => 'Inventarios'],
+        [
+            'text' => 'Categorías',
+            'url' => 'admin/categories',
+            'icon' => 'fas fa-fw fa-folder',
+            'can' => 'manage-categories',
+        ],
+        [
+            'text' => 'Subcategorías',
+            'url' => 'admin/subcategories',
+            'icon' => 'fas fa-fw fa-folder-open',
+            'can' => 'manage-subcategories',
+        ],
     ],
 
     /*
