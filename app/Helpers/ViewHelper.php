@@ -26,8 +26,15 @@ class ViewHelper
 
                 // Verificar que el archivo existe
                 if (str_starts_with($logoPath, '/storage/')) {
-                    $filePath = public_path($logoPath);
-                    if (file_exists($filePath)) {
+                    // Buscar en storage primero
+                    $storagePath = storage_path('app/public' . $logoPath);
+                    if (file_exists($storagePath)) {
+                        return $logoPath;
+                    }
+
+                    // Fallback: buscar en public
+                    $publicPath = public_path($logoPath);
+                    if (file_exists($publicPath)) {
                         return $logoPath;
                     }
                 }
@@ -40,9 +47,14 @@ class ViewHelper
         }
 
         // Verificar si existe el logo por defecto en storage
-        $defaultLogoPath = '/storage/logos/app-logo.jpeg';
-        $defaultFilePath = public_path($defaultLogoPath);
-        if (file_exists($defaultFilePath)) {
+        $defaultLogoPath = '/storage/logos/app-logo.svg';
+        $storageFilePath = storage_path('app/public' . $defaultLogoPath);
+        if (file_exists($storageFilePath)) {
+            return $defaultLogoPath;
+        }
+
+        $publicFilePath = public_path($defaultLogoPath);
+        if (file_exists($publicFilePath)) {
             return $defaultLogoPath;
         }
 

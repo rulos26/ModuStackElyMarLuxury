@@ -3,7 +3,35 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-// Ruta para servir imágenes desde storage (solución para servidores compartidos)
+// Aplicar middleware de intentos de login a las rutas de autenticación
+Route::middleware(['login.attempts'])->group(function () {
+    Auth::routes();
+});
+
+// Ruta específica para logos (solución para servidores compartidos)
+Route::get('/storage/logos/{filename}', function ($filename) {
+    $filePath = storage_path('app/public/logos/' . $filename);
+
+    if (!file_exists($filePath)) {
+        // Intentar desde directorio público como fallback
+        $publicPath = public_path('logos/' . $filename);
+        if (file_exists($publicPath)) {
+            $filePath = $publicPath;
+        } else {
+            abort(404, 'Logo no encontrado');
+        }
+    }
+
+    $mimeType = mime_content_type($filePath);
+    $file = file_get_contents($filePath);
+
+    return response($file, 200)
+        ->header('Content-Type', $mimeType)
+        ->header('Cache-Control', 'public, max-age=31536000'); // Cache por 1 año
+})->where('filename', '.*');
+
+// Ruta general para servir imágenes desde storage (solución para servidores compartidos)
+// DEBE estar FUERA de cualquier middleware para ser accesible públicamente
 Route::get('/storage/{path}', function ($path) {
     $filePath = storage_path('app/public/' . $path);
 
@@ -18,11 +46,6 @@ Route::get('/storage/{path}', function ($path) {
         ->header('Content-Type', $mimeType)
         ->header('Cache-Control', 'public, max-age=31536000'); // Cache por 1 año
 })->where('path', '.*');
-
-// Aplicar middleware de intentos de login a las rutas de autenticación
-Route::middleware(['login.attempts'])->group(function () {
-    Auth::routes();
-});
 
 // Aplicar middleware de control de acceso por IP a todas las rutas protegidas
 Route::middleware(['ip.access'])->group(function () {
