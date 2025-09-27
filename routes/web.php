@@ -1,6 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+
+// Ruta para servir imágenes desde storage (solución para servidores compartidos)
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+
+    if (!file_exists($filePath)) {
+        abort(404);
+    }
+
+    $mimeType = mime_content_type($filePath);
+    $file = file_get_contents($filePath);
+
+    return response($file, 200)
+        ->header('Content-Type', $mimeType)
+        ->header('Cache-Control', 'public, max-age=31536000'); // Cache por 1 año
+})->where('path', '.*');
 
 // Aplicar middleware de intentos de login a las rutas de autenticación
 Route::middleware(['login.attempts'])->group(function () {

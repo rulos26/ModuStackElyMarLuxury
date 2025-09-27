@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>Ely Mar Luxury</b>',
-    'logo_img' => '/storage/logos/app-logo.jpeg',
+    'logo_img' => '/storage/logos/app-logo.svg',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => '/storage/logos/app-logo.jpeg',
+            'path' => '/storage/logos/app-logo.svg',
             'alt' => 'Ely Mar Luxury',
             'class' => '',
             'width' => 50,

@@ -45,6 +45,9 @@ class LogoService
             throw new \Exception('Error al subir el archivo del logo');
         }
 
+        // Copiar también al directorio público para servidores compartidos
+        self::copyToPublicDirectory($filename);
+
         // Retornar la ruta relativa (sin dominio)
         return '/storage/' . $uploadedPath;
     }
@@ -77,18 +80,25 @@ class LogoService
      */
     public static function deleteOldLogo(): void
     {
-        $logoDirectory = storage_path('app/public/' . self::LOGO_DIRECTORY);
-
-        if (!is_dir($logoDirectory)) {
-            return;
+        // Eliminar de storage
+        $storageDirectory = storage_path('app/public/' . self::LOGO_DIRECTORY);
+        if (is_dir($storageDirectory)) {
+            $files = glob($storageDirectory . '/app-logo.*');
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
         }
 
-        // Buscar y eliminar archivos que empiecen con app-logo
-        $files = glob($logoDirectory . '/app-logo.*');
-
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                unlink($file);
+        // Eliminar de directorio público
+        $publicDirectory = public_path(self::LOGO_DIRECTORY);
+        if (is_dir($publicDirectory)) {
+            $files = glob($publicDirectory . '/app-logo.*');
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
             }
         }
     }
@@ -161,5 +171,25 @@ class LogoService
             'size' => file_exists($filePath) ? filesize($filePath) : null,
             'modified' => file_exists($filePath) ? filemtime($filePath) : null
         ];
+    }
+
+    /**
+     * Copiar archivo al directorio público para servidores compartidos
+     */
+    private static function copyToPublicDirectory(string $filename): void
+    {
+        $storagePath = storage_path('app/public/' . self::LOGO_DIRECTORY . '/' . $filename);
+        $publicPath = public_path(self::LOGO_DIRECTORY . '/' . $filename);
+
+        // Crear directorio público si no existe
+        $publicDirectory = public_path(self::LOGO_DIRECTORY);
+        if (!is_dir($publicDirectory)) {
+            mkdir($publicDirectory, 0755, true);
+        }
+
+        // Copiar archivo
+        if (file_exists($storagePath)) {
+            copy($storagePath, $publicPath);
+        }
     }
 }
